@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+:root {
+    --main-color: rgb(52, 52, 52);
+    --main-color__dark: rgb(37, 37, 37);
+    --secondary-color: rgb(194, 197, 197);
+    --font-primary: rgb(233, 239, 243);
+    --font-secondary: rgb(103, 103, 245);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--main-color__light);
+    margin: 0px;
+}
+
+.navbar {
+    height: 100px;
+    background-color: var(--main-color__dark);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    display: flex;
+    align-items: center;
+}
+
+h1 {
+    color: var(--font-primary);
+    font-family: Roboto;
+    font-size: 42px;
+    user-select: none;
+    margin-left: 40px;
+}
+
+h1 > span {
+    color: var(--font-secondary);
+    font-size: 32px;
+}
+
+.main-container {
+    display: flex;
+    min-height: 1000px;
+}
+
+.side-container {
+    width: 300px;
+    background-color: var(--main-color);
+
+    color: rgb(255, 255, 255);
+    font-family: Roboto;
+}
+
+.project-list-container {
+}
+
+.project-list {
+    width: 90%;
+    margin: auto;
+}
+
+li {
+    margin: 8px;
+    cursor: pointer;
+}
+
+.project {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#project-adder {
+    background-color: rgb(43, 42, 42);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.main-container {
+
+}
+
+@media only screen and (max-width: 600px) {
+    h1 {
+        margin-left: 0px;
+    }
+    .navbar {
+        justify-content: center;
+    }
+}
+
+/* ICONS */
+.add-project {
+    cursor: pointer;
+    user-select: none;
+}
+
