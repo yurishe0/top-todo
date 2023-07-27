@@ -1,1 +1,1 @@
-
+import './DOM.js';
