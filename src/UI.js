@@ -1,5 +1,6 @@
-import { projectListContainer } from './DOM.js';
-import { storage } from './storage.js';
+import { projectListContainer, body, siteContainer } from './DOM.js';
+import { createProject } from './createProject.js';
+import { Storage, nodeList } from './storage.js';
 
 export class UI  {
     static addProjectToPage(project) {
@@ -15,7 +16,9 @@ export class UI  {
         projectDelete.innerHTML = "delete";
 
         projectDelete.addEventListener('click', () => {
-            storage.removeProject(project);
+            Storage.removeProject(project);
+            Storage.removeNode(projectContainer);
+            this.loadProjectsToPage();
         });
 
         projectContainer.classList.add('project');
@@ -24,7 +27,65 @@ export class UI  {
         projectContainer.appendChild(projectName);
         projectContainer.appendChild(projectEdit);
         projectContainer.appendChild(projectDelete);
-        projectListContainer.prepend(projectContainer);
+        Storage.addNode(projectContainer);``
+        this.loadProjectsToPage();
+    }
+
+    static loadProjectsToPage() {
+        projectListContainer.innerHTML = '';
+        nodeList.forEach((node) => {
+            projectListContainer.prepend(node);
+        });
+    }
+
+    static displayPopUp(popUpType) {
+        this.dimSite();
+        const popUpContainer = document.createElement('div');
+        popUpContainer.classList.add('popup-container');
+
+        const header = document.createElement('h2');
+
+        switch(popUpType) {
+            case "projectCreation":
+                header.textContent = "Add Project";
+                const input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('placeholder', 'Enter the project name...');
+
+                const buttonContainer = document.createElement('div');
+                buttonContainer.classList.add('button-container');
+
+                const submitButton = document.createElement('button');
+                submitButton.textContent = "SUBMIT";
+                submitButton.addEventListener('click', () => {
+                    createProject(input.value)
+                });
+                submitButton.addEventListener('click', this.hidePopUp);
+                submitButton.addEventListener('click', this.undimSite);
+
+                const cancelButton = document.createElement('button');
+                cancelButton.textContent = "CANCEL";
+                cancelButton.addEventListener('click', this.hidePopUp);
+                cancelButton.addEventListener('click', this.undimSite);
+                buttonContainer.append(submitButton, cancelButton);
+
+                popUpContainer.append(header, input, buttonContainer);
+            }
+
+        body.appendChild(popUpContainer);
+    }
+
+    static hidePopUp() {
+        const popUpContainer = document.querySelector('.popup-container');
+        popUpContainer.remove();
+    }
+
+    static dimSite() {
+        siteContainer.classList.add('dim');
+    }
+
+    static undimSite() {
+        siteContainer.classList.remove('dim');
     }
 }
 
