@@ -83,9 +83,18 @@ li {
     align-items: center;
 }
 
-.popup-container > h2 {
+.popup-error {
+    outline: 2px solid rgb(199, 35, 35);
+    outline-offset: -6px;
+}
+
+.popup-container > h2, p {
     font-family: roboto;
     color: white;
+}
+
+.popup-container > p {
+    margin: 0px;
 }
 
 .popup-container > input {
