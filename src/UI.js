@@ -38,12 +38,19 @@ export class UI  {
         });
     }
 
-    static displayPopUp(popUpType) {
+    static displayPopUp(popUpType, message) {
         this.dimSite();
         const popUpContainer = document.createElement('div');
         popUpContainer.classList.add('popup-container');
 
         const header = document.createElement('h2');
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.classList.add('button-container');
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = "CANCEL";
+        cancelButton.addEventListener('click', this.hidePopUp);
+        cancelButton.addEventListener('click', this.undimSite);
 
         switch(popUpType) {
             case "projectCreation":
@@ -52,26 +59,28 @@ export class UI  {
                 input.setAttribute('type', 'text');
                 input.setAttribute('placeholder', 'Enter the project name...');
 
-                const buttonContainer = document.createElement('div');
-                buttonContainer.classList.add('button-container');
-
                 const submitButton = document.createElement('button');
                 submitButton.textContent = "SUBMIT";
-                submitButton.addEventListener('click', () => {
-                    createProject(input.value)
-                });
-                submitButton.addEventListener('click', this.hidePopUp);
                 submitButton.addEventListener('click', this.undimSite);
-
-                const cancelButton = document.createElement('button');
-                cancelButton.textContent = "CANCEL";
-                cancelButton.addEventListener('click', this.hidePopUp);
-                cancelButton.addEventListener('click', this.undimSite);
-                buttonContainer.append(submitButton, cancelButton);
+                submitButton.addEventListener('click', this.hidePopUp);
+                submitButton.addEventListener('click', () => {
+                    createProject(input.value);
+                });
+                buttonContainer.append(submitButton);
 
                 popUpContainer.append(header, input, buttonContainer);
-            }
+                break;
 
+                case "errorCreation":
+                    header.textContent = "Error";
+                    const paragraph = document.createElement('p');
+                    paragraph.textContent = message;
+                    popUpContainer.append(header, paragraph);
+                    popUpContainer.classList.add('popup-error');
+                }
+
+        buttonContainer.append(cancelButton);
+        popUpContainer.append(buttonContainer);
         body.appendChild(popUpContainer);
     }
 
