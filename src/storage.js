@@ -4,11 +4,12 @@ export const nodeList = [];
 export class Storage {
     static addProject(project) {
         projectList.push(project);
+        console.log("Project list status:");
+        console.log(projectList);
     }
 
-
     static removeProject(project) {
-        const index = projectList.findIndex((item) => item.getName() == project.getName());
+        const index = findProject(project);
         if(index != -1) {
             projectList.splice(index, 1);
             console.log(projectList);
@@ -27,6 +28,11 @@ export class Storage {
             nodeList.splice(index, 1);
             console.log(nodeList);
         }
+    }
+
+    static findProject(project) {
+        const index = projectList.findIndex((item) => item.getName() == project.getName());
+        return index;
     }
 }
 
