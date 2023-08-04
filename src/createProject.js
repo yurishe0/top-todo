@@ -1,14 +1,24 @@
-import { zhCN } from 'date-fns/locale';
 import { Project } from './project.js';
-import { Storage } from './storage.js';
+import { Storage, projectList } from './storage.js';
 import { UI } from './UI.js';
 
 export const createProject = (name) => {
-    if(name !== '') {
+    let nameExists;
+
+    projectList.forEach(project => {
+        if(project.name == name) {
+            UI.displayPopUp("errorCreation", "The project under this name already exists.");
+            nameExists = true;
+        }
+    })
+    if(name == '') {
+        UI.displayPopUp("errorCreation", "The project name must not be empty.");
+        return;
+    }
+    if(!nameExists) {
         const project = new Project(name);
         Storage.addProject(project);
         UI.addProjectToPage(project);
         return;
     }
-    UI.displayPopUp("errorCreation", "The project name must not be empty.");
 }
