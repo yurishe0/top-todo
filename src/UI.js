@@ -11,6 +11,11 @@ export class UI  {
         projectEdit.classList.add("material-icons", "edit-project");
         projectEdit.innerHTML = "edit";
 
+        projectEdit.addEventListener('click', () => {
+            UI.displayPopUp("projectRename", "", project);
+            this.loadProjectsToPage();
+        })
+
         const projectDelete = document.createElement('i');
         projectDelete.classList.add("material-icons", "delete-project");
         projectDelete.innerHTML = "delete";
@@ -38,7 +43,7 @@ export class UI  {
         });
     }
 
-    static displayPopUp(popUpType, message) {
+    static displayPopUp(popUpType, message, project) {
         this.dimSite();
         const popUpContainer = document.createElement('div');
         popUpContainer.classList.add('popup-container');
@@ -52,17 +57,18 @@ export class UI  {
         cancelButton.addEventListener('click', this.hidePopUp);
         cancelButton.addEventListener('click', this.undimSite);
 
+        const input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        const submitButton = document.createElement('button');
+        submitButton.textContent = "SUBMIT";
+        submitButton.addEventListener('click', this.undimSite);
+        submitButton.addEventListener('click', this.hidePopUp);
+
         switch(popUpType) {
             case "projectCreation":
                 header.textContent = "Add Project";
-                const input = document.createElement('input');
-                input.setAttribute('type', 'text');
                 input.setAttribute('placeholder', 'Enter the project name...');
 
-                const submitButton = document.createElement('button');
-                submitButton.textContent = "SUBMIT";
-                submitButton.addEventListener('click', this.undimSite);
-                submitButton.addEventListener('click', this.hidePopUp);
                 submitButton.addEventListener('click', () => {
                     createProject(input.value);
                 });
@@ -70,13 +76,25 @@ export class UI  {
 
                 popUpContainer.append(header, input, buttonContainer);
                 break;
+            case "projectRename":
+                header.textContent = "Rename Project";
+                input.setAttribute('placeholder', 'Enter the new project name...');
 
-                case "errorCreation":
+                submitButton.addEventListener('click', () => {
+                    Storage.renameProject(project, input.value);
+                });
+
+                buttonContainer.append(submitButton);
+
+                popUpContainer.append(header, input, buttonContainer);
+                break;
+            case "errorCreation":
                     header.textContent = "Error";
                     const paragraph = document.createElement('p');
                     paragraph.textContent = message;
                     popUpContainer.append(header, paragraph);
                     popUpContainer.classList.add('popup-error');
+                    break;
                 }
 
         buttonContainer.append(cancelButton);
