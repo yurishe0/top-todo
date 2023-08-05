@@ -1,3 +1,5 @@
+import { UI } from "./UI";
+
 export const projectList = [];
 export const nodeList = [];
 
@@ -30,6 +32,10 @@ export class Storage {
     }
 
     static renameProject(project, newName) {
+        if(newName == '') {
+            UI.displayPopUp("errorCreation", "The new name must not be empty.");
+            return;
+        }
         const index = this.findProject(project);
         projectList[index].setName(newName);
         nodeList[index].firstChild.textContent = newName;
