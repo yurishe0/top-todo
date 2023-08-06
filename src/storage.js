@@ -32,13 +32,23 @@ export class Storage {
     }
 
     static renameProject(project, newName) {
+        let nameExists;
         if(newName == '') {
             UI.displayPopUp("errorCreation", "The new name must not be empty.");
             return;
         }
-        const index = this.findProject(project);
-        projectList[index].setName(newName);
-        nodeList[index].firstChild.textContent = newName;
+        projectList.forEach((item) => {
+            if(item.getName() == newName) {
+                nameExists = true;
+                UI.displayPopUp("errorCreation", "A project under this name already exists.");
+                return;
+            }
+        })
+        if(!nameExists) {
+            const index = this.findProject(project);
+            projectList[index].setName(newName);
+            nodeList[index].firstChild.textContent = newName;
+        }
     }
 }
 
