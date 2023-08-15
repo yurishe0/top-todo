@@ -56,6 +56,53 @@ h1 > span {
     font-family: Roboto;
 }
 
+.content-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.todos-container {
+    position: relative;
+    background-color: rgb(220, 226, 230);
+    border-radius: 8px;
+    width: 75%;
+    height: 80%;
+}
+
+hr {
+    margin: 0px;
+}
+
+.project-info-container {
+    background-color: var(--main-color);
+    border-radius: 8px 8px 0px 0px;
+}
+
+.project-info-container h2 {
+    font-family: Roboto;
+    font-size: 36px;
+    color: var(--font-primary);
+    margin: 0px;
+    padding: 8px;
+}
+
+.project-info-container > h2 > span {
+    font-size: 16px;
+    color: var(--font-secondary);
+}
+
+.add-todo {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+
+    font-size: 56px !important;
+    margin: 12px;
+    color: var(--main-color);
+}
+
 .project-list {
     padding: 10px;
 }
@@ -167,6 +214,9 @@ input:focus {
 
 .project span {
     cursor: pointer;
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .project:hover {
