@@ -1,4 +1,4 @@
-import { projectListContainer, body, siteContainer } from './DOM.js';
+import { projectListContainer, body, siteContainer, todosContainer } from './DOM.js';
 import { createProject } from './createProject.js';
 import { Storage, nodeList } from './storage.js';
 
@@ -28,6 +28,9 @@ export class UI  {
 
         projectContainer.classList.add('project');
         projectName.textContent = project.name;
+        projectName.addEventListener('click', () => {
+            this.loadTodosToPage(project);
+        })
 
         projectContainer.appendChild(projectName);
         projectContainer.appendChild(projectEdit);
@@ -39,8 +42,56 @@ export class UI  {
     static loadProjectsToPage() {
         projectListContainer.innerHTML = '';
         nodeList.forEach((node) => {
-            projectListContainer.prepend(node);
+            projectListContainer.appendChild(node);
         });
+    }
+
+    static loadTodosToPage(project) {
+        todosContainer.innerHTML = "";
+
+        const projectInfoContainer = document.createElement('div');
+        const projectHeader = document.createElement('h2');
+        const todoCount = document.createElement('span');
+
+        const addTodoButton = document.createElement('span');
+        addTodoButton.textContent = "add_circle";
+        addTodoButton.classList.add("material-icons", "add-todo", "md-48");
+
+        projectHeader.textContent = project.name;
+        todoCount.textContent = `Todo count: ${project.list.length}`;
+        projectHeader.appendChild(todoCount);
+
+        projectInfoContainer.classList.add('project-info-container');
+        projectInfoContainer.append(projectHeader);
+        todosContainer.append(projectInfoContainer);
+
+        const nodes = this.createTodoNodes(project);
+        nodes.forEach((node) => {
+            todosContainer.appendChild(node);
+        });
+
+        todosContainer.append(addTodoButton);
+    }
+
+    static createTodoNodes(project) {
+        const nodes = [];
+            project.list.forEach((item) => {
+                const todoContainer = document.createElement('div');
+                const todoTitle = document.createElement('h3');
+                const todoDescription = document.createElement('p');
+                const todoDate = document.createElement('span');
+                const todoPriority = document.createElement('span');
+
+                todoContainer.classList.add('todo-container');
+                todoTitle.textContent = item.title;
+                todoDescription.textContent = item.description;
+                todoDate.textContent = item.dueDate;
+                todoPriority.textContent = item.priority;
+
+                todoContainer.append(todoTitle, todoDescription, todoDate, todoPriority);
+                nodes.push(todoContainer);
+            });
+        return nodes;
     }
 
     static displayPopUp(popUpType, message, project) {
