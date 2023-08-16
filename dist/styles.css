@@ -107,9 +107,6 @@ hr {
     padding: 10px;
 }
 
-li {
-}
-
 .popup-container {
     width: 450px;
 
@@ -152,6 +149,7 @@ li {
     outline: none;
     border: none;
     border-bottom: 4px solid var(--font-secondary);
+    margin: 8px;
 }
 
 input::placeholder {
