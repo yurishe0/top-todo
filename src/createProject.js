@@ -4,7 +4,6 @@ import { UI } from './UI.js';
 
 export const createProject = (name) => {
     let nameExists;
-
     projectList.forEach(project => {
         if(project.name == name) {
             UI.displayPopUp("errorCreation", "The project under this name already exists.");

@@ -1,6 +1,7 @@
 import { projectListContainer, body, siteContainer, todosContainer } from './DOM.js';
 import { createProject } from './createProject.js';
 import { Storage, nodeList } from './storage.js';
+import { Todo } from './todo.js';
 
 export class UI  {
     static addProjectToPage(project) {
@@ -56,6 +57,9 @@ export class UI  {
         const addTodoButton = document.createElement('span');
         addTodoButton.textContent = "add_circle";
         addTodoButton.classList.add("material-icons", "add-todo", "md-48");
+        addTodoButton.addEventListener('click', () => {
+            this.displayPopUp("todoCreation", "", project);
+        })
 
         projectHeader.textContent = project.name;
         todoCount.textContent = `Todo count: ${project.list.length}`;
@@ -126,6 +130,26 @@ export class UI  {
                 buttonContainer.append(submitButton);
 
                 popUpContainer.append(header, input, buttonContainer);
+                break;
+            case "todoCreation":
+                header.textContent = "Add Todo";
+                input.setAttribute('placeholder', 'Title...');
+
+                const description = document.createElement('input');
+                description.setAttribute('placeholder', 'Description...');
+
+                const date = document.createElement('input');
+                date.setAttribute('type', 'date');
+
+                const priority = document.createElement('input');
+                priority.setAttribute('type', 'number');
+
+                submitButton.addEventListener('click', () => {
+                    project.addTodo(new Todo(input.value, description.value, date.value, priority.value));
+                    console.log(project.list);
+                });
+                buttonContainer.append(submitButton);
+                popUpContainer.append(header, input, description, date, priority, buttonContainer);
                 break;
             case "projectRename":
                 header.textContent = "Rename Project";
