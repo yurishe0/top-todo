@@ -111,6 +111,12 @@ export class UI  {
 
                 const todoCheck = document.createElement('input');
                 todoCheck.setAttribute("type", "checkbox");
+                if(item.checked == true) {
+                    todoCheck.setAttribute("checked", "true");
+                }
+                todoCheck.addEventListener('change', () => {
+                    item.checkTodo();
+                });
 
                 actionContainer.append(todoCheck, todoEdit, todoDelete);
 
