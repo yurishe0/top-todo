@@ -1,4 +1,4 @@
-import { projectListContainer, body, siteContainer, todosContainer } from './DOM.js';
+import { projectListContainer, body, siteContainer, projectContainer, contentContainer } from './DOM.js';
 import { createProject } from './createProject.js';
 import { Storage, nodeList } from './storage.js';
 import { Todo } from './todo.js';
@@ -48,9 +48,10 @@ export class UI  {
     }
 
     static loadTodosToPage(project) {
-        todosContainer.innerHTML = "";
+        projectContainer.innerHTML = "";
 
         const projectInfoContainer = document.createElement('div');
+        const todosContainer = document.createElement('div');
         const projectHeader = document.createElement('h2');
         const todoCount = document.createElement('span');
 
@@ -67,32 +68,55 @@ export class UI  {
 
         projectInfoContainer.classList.add('project-info-container');
         projectInfoContainer.append(projectHeader);
-        todosContainer.append(projectInfoContainer);
+        projectContainer.append(projectInfoContainer);
+
+        todosContainer.classList.add('todos-container');
 
         const nodes = this.createTodoNodes(project);
         nodes.forEach((node) => {
             todosContainer.appendChild(node);
         });
 
-        todosContainer.append(addTodoButton);
+        projectContainer.appendChild(todosContainer);
+        projectContainer.append(addTodoButton);
     }
 
     static createTodoNodes(project) {
         const nodes = [];
             project.list.forEach((item) => {
                 const todoContainer = document.createElement('div');
+                const todoHeader = document.createElement('div');
+                const todoContent = document.createElement('div');
+                const actionContainer = document.createElement('div');
                 const todoTitle = document.createElement('h3');
-                const todoDescription = document.createElement('p');
                 const todoDate = document.createElement('span');
-                const todoPriority = document.createElement('span');
+                const todoDescription = document.createElement('p');
 
                 todoContainer.classList.add('todo-container');
+                todoHeader.classList.add('todo-header');
+                todoContent.classList.add('todo-content');
+                actionContainer.classList.add('action-container');
                 todoTitle.textContent = item.title;
-                todoDescription.textContent = item.description;
+                todoDate.classList.add('todo-date')
                 todoDate.textContent = item.dueDate;
-                todoPriority.textContent = item.priority;
+                todoDescription.textContent = item.description;
 
-                todoContainer.append(todoTitle, todoDescription, todoDate, todoPriority);
+                const todoEdit = document.createElement('i');
+                todoEdit.classList.add("material-icons", "edit-todo");
+                todoEdit.innerHTML = "edit";
+
+                const todoDelete = document.createElement('i');
+                todoDelete.classList.add("material-icons", "delete-todo");
+                todoDelete.innerHTML = "delete";
+
+                const todoCheck = document.createElement('input');
+                todoCheck.setAttribute("type", "checkbox");
+
+                actionContainer.append(todoCheck, todoEdit, todoDelete);
+
+                todoHeader.append(todoTitle, todoDate);
+                todoContent.append(todoDescription, actionContainer);
+                todoContainer.append(todoHeader, todoContent);
                 nodes.push(todoContainer);
             });
         return nodes;
@@ -146,7 +170,7 @@ export class UI  {
 
                 submitButton.addEventListener('click', () => {
                     project.addTodo(new Todo(input.value, description.value, date.value, priority.value));
-                    console.log(project.list);
+                    this.loadTodosToPage(project);
                 });
                 buttonContainer.append(submitButton);
                 popUpContainer.append(header, input, description, date, priority, buttonContainer);
