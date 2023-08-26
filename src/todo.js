@@ -4,6 +4,7 @@ export class Todo {
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.checked = false;
     }
 
     getTitle() {
@@ -20,5 +21,13 @@ export class Todo {
 
     getPriority() {
         return this.priority;
+    }
+
+    checkTodo() {
+        if(this.checked == false) {
+            this.checked = true;
+            return;
+        }
+        this.checked = false;
     }
 }
