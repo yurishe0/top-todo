@@ -111,6 +111,10 @@ export class UI  {
                 const todoDelete = document.createElement('i');
                 todoDelete.classList.add("material-icons", "delete-todo");
                 todoDelete.innerHTML = "delete";
+                todoDelete.addEventListener('click', () => {
+                    Storage.removeTodo(item);
+                    this.loadTodosToPage(project);
+                })
 
                 const todoCheck = document.createElement('input');
                 todoCheck.setAttribute("type", "checkbox");

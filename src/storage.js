@@ -15,6 +15,12 @@ export class Storage {
         }
     }
 
+    static removeTodo(todo) {
+        const todoLocation = this.findTodo(todo);
+        projectList[todoLocation[0]].list.splice(todoLocation[1], 1);
+        console.log(projectList);
+    }
+
     static addNode(node) {
         nodeList.push(node);
     }
