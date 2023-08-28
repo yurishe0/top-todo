@@ -83,14 +83,14 @@ export class UI  {
 
     static createTodoNodes(project) {
         const nodes = [];
-            project.list.forEach((item) => {
-                const todoContainer = document.createElement('div');
-                const todoHeader = document.createElement('div');
-                const todoContent = document.createElement('div');
-                const actionContainer = document.createElement('div');
-                const todoTitle = document.createElement('h3');
-                const todoDate = document.createElement('span');
-                const todoDescription = document.createElement('p');
+        project.list.forEach((item) => {
+            const todoContainer = document.createElement('div');
+            const todoHeader = document.createElement('div');
+            const todoContent = document.createElement('div');
+            const actionContainer = document.createElement('div');
+            const todoTitle = document.createElement('h3');
+            const todoDate = document.createElement('span');
+            const todoDescription = document.createElement('p');
 
                 todoContainer.classList.add('todo-container');
                 todoHeader.classList.add('todo-header');
@@ -104,6 +104,9 @@ export class UI  {
                 const todoEdit = document.createElement('i');
                 todoEdit.classList.add("material-icons", "edit-todo");
                 todoEdit.innerHTML = "edit";
+                todoEdit.addEventListener('click', () => {
+                    this.displayPopUp("todoEdit", "", project, item);
+                });
 
                 const todoDelete = document.createElement('i');
                 todoDelete.classList.add("material-icons", "delete-todo");
@@ -116,7 +119,10 @@ export class UI  {
                 }
                 todoCheck.addEventListener('change', () => {
                     item.checkTodo();
+                    this.adjustTodoStyling(todoTitle, todoDate, todoDescription, todoHeader, todoContainer, item);
                 });
+
+                this.adjustTodoStyling(todoTitle, todoDate, todoDescription, todoHeader, todoContainer, item);
 
                 actionContainer.append(todoCheck, todoEdit, todoDelete);
 
@@ -125,29 +131,46 @@ export class UI  {
                 todoContainer.append(todoHeader, todoContent);
                 nodes.push(todoContainer);
             });
-        return nodes;
-    }
+            return nodes;
+        }
 
-    static displayPopUp(popUpType, message, project) {
-        this.dimSite();
-        const popUpContainer = document.createElement('div');
-        popUpContainer.classList.add('popup-container');
+        static adjustTodoStyling(todoTitle, todoDate, todoDescription, todoHeader, todoContainer, item) {
+            if(item.checked == true) {
+                todoTitle.style.textDecoration = "line-through";
+                todoDate.style.textDecoration = "line-through";
+                todoDescription.style.textDecoration = "line-through";
+                todoHeader.style.backgroundColor = "rgba(103, 103, 245, 0.4)";
+                todoContainer.style.backgroundColor = "rgba(220, 226, 230, 0.4)";
+            }
+            else {
+                todoTitle.style.textDecoration = "";
+                todoDate.style.textDecoration = "";
+                todoDescription.style.textDecoration = "";
+                todoHeader.style.backgroundColor = "var(--font-secondary)";
+                todoContainer.style.backgroundColor = "rgba(220, 226, 230, 1)";
+            }
+        }
 
-        const header = document.createElement('h2');
+        static displayPopUp(popUpType, message, project, todo) {
+            this.dimSite();
+            const popUpContainer = document.createElement('div');
+            popUpContainer.classList.add('popup-container');
 
-        const buttonContainer = document.createElement('div');
-        buttonContainer.classList.add('button-container');
-        const cancelButton = document.createElement('button');
-        cancelButton.textContent = "CANCEL";
-        cancelButton.addEventListener('click', this.hidePopUp);
-        cancelButton.addEventListener('click', this.undimSite);
+            const header = document.createElement('h2');
 
-        const input = document.createElement('input');
-        input.setAttribute('type', 'text');
-        const submitButton = document.createElement('button');
-        submitButton.textContent = "SUBMIT";
-        submitButton.addEventListener('click', this.undimSite);
-        submitButton.addEventListener('click', this.hidePopUp);
+            const buttonContainer = document.createElement('div');
+            buttonContainer.classList.add('button-container');
+            const cancelButton = document.createElement('button');
+            cancelButton.textContent = "CANCEL";
+            cancelButton.addEventListener('click', this.hidePopUp);
+            cancelButton.addEventListener('click', this.undimSite);
+
+            const input = document.createElement('input');
+            input.setAttribute('type', 'text');
+            const submitButton = document.createElement('button');
+            submitButton.textContent = "SUBMIT";
+            submitButton.addEventListener('click', this.undimSite);
+            submitButton.addEventListener('click', this.hidePopUp);
 
         switch(popUpType) {
             case "projectCreation":
@@ -193,6 +216,27 @@ export class UI  {
 
                 popUpContainer.append(header, input, buttonContainer);
                 break;
+            case "todoEdit":
+                header.textContent = "Edit Todo";
+
+                input.setAttribute('placeholder', 'Title...');
+
+                const newDescription = document.createElement('input');
+                newDescription.setAttribute('placeholder', 'Description...');
+
+                const newDate = document.createElement('input');
+                newDate.setAttribute('type', 'date');
+
+                const newPriority = document.createElement('input');
+                newPriority.setAttribute('type', 'number');
+
+                submitButton.addEventListener('click', () => {
+                    Storage.editTodo(todo, input.value, newDescription.value, newDate.value, newPriority.value);
+                    this.loadTodosToPage(project);
+                });
+                buttonContainer.append(submitButton);
+                popUpContainer.append(header, input, newDescription, newDate, newPriority, buttonContainer);
+                break;
             case "errorCreation":
                     header.textContent = "Error";
                     const paragraph = document.createElement('p');
@@ -206,6 +250,7 @@ export class UI  {
         popUpContainer.append(buttonContainer);
         body.appendChild(popUpContainer);
     }
+
 
     static hidePopUp() {
         const popUpContainer = document.querySelector('.popup-container');

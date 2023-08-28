@@ -31,6 +31,20 @@ export class Storage {
         return index;
     }
 
+    static findTodo(todo) {
+        let projectIndex = 0;
+        let todoIndex = 0;
+        projectList.forEach((project) => {
+            const index = project.list.findIndex((item) => item.title == todo.title);
+            if(index != -1) {
+                todoIndex = index;
+                return;
+            }
+            projectIndex++;
+        });
+        return [projectIndex, todoIndex];
+    }
+
     static renameProject(project, newName) {
         let nameExists;
         if(newName == '') {
@@ -49,6 +63,14 @@ export class Storage {
             projectList[index].setName(newName);
             nodeList[index].firstChild.textContent = newName;
         }
+    }
+
+    static editTodo(todo, newName, newDescription, newDate, newPriority) {
+        const todoLocation = this.findTodo(todo);
+        projectList[todoLocation[0]].list[todoLocation[1]].title = newName;
+        projectList[todoLocation[0]].list[todoLocation[1]].description = newDescription;
+        projectList[todoLocation[0]].list[todoLocation[1]].dueDate = newDate;
+        projectList[todoLocation[0]].list[todoLocation[1]].priority = newPriority;
     }
 }
 
