@@ -112,7 +112,7 @@ export class UI  {
                 todoDelete.classList.add("material-icons", "delete-todo");
                 todoDelete.innerHTML = "delete";
                 todoDelete.addEventListener('click', () => {
-                    Storage.removeTodo(item);
+                    Storage.removeTodo(item, project);
                     this.loadTodosToPage(project);
                 })
 
