@@ -62,11 +62,24 @@ export class Storage {
     }
 
     static editTodo(todo, project, newName, newDescription, newDate, newPriority) {
-        const todoIndex = this.findTodo(todo, project);
-        project.list[todoIndex].title = newName;
-        project.list[todoIndex].description = newDescription;
-        project.list[todoIndex].dueDate = newDate;
-        project.list[todoIndex].priority = newPriority;
+        let nameExists;
+        let index = project.list.findIndex((todo) => todo.title == newName);
+        if(index != -1) {
+            UI.displayPopUp("errorCreation", "A todo under this name already exists.");
+            nameExists = true;
+        }
+        if(newName == '') {
+            UI.displayPopUp("errorCreation", "The todo name must not be empty.");
+            return;
+        }
+        if(!nameExists) {
+            const todoIndex = this.findTodo(todo, project);
+            project.list[todoIndex].title = newName;
+            project.list[todoIndex].description = newDescription;
+            project.list[todoIndex].dueDate = newDate;
+            project.list[todoIndex].priority = newPriority;
+            return;
+        }
     }
 }
 
