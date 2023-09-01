@@ -37,14 +37,6 @@ export class Storage {
     }
 
     static findTodo(todo, project) {
-        // projectList.forEach((project) => {
-        //     const index = project.list.findIndex((item) => item.title == todo.title);
-        //     if(index != -1) {
-        //         todoIndex = index;
-        //         return;
-        //     }
-        //     projectIndex++;
-        // });
         const index = project.list.findIndex((item) => item.title == todo.title);
         return index;
     }

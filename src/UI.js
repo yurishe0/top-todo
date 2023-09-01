@@ -1,5 +1,6 @@
 import { projectListContainer, body, siteContainer, projectContainer, contentContainer } from './DOM.js';
 import { createProject } from './createProject.js';
+import { createTodo } from './createTodo.js';
 import { Storage, nodeList } from './storage.js';
 import { Todo } from './todo.js';
 
@@ -94,6 +95,7 @@ export class UI  {
 
                 todoContainer.classList.add('todo-container');
                 todoHeader.classList.add('todo-header');
+                todoHeader.classList.add(`todo-priority-${item.priority}`);
                 todoContent.classList.add('todo-content');
                 actionContainer.classList.add('action-container');
                 todoTitle.textContent = item.title;
@@ -202,7 +204,8 @@ export class UI  {
                 priority.setAttribute('type', 'number');
 
                 submitButton.addEventListener('click', () => {
-                    project.addTodo(new Todo(input.value, description.value, date.value, priority.value));
+                    // project.addTodo(new Todo(input.value, description.value, date.value, priority.value));
+                    createTodo(input.value, project, description.value, date.value, priority.value);
                     this.loadTodosToPage(project);
                 });
                 buttonContainer.append(submitButton);
@@ -235,7 +238,7 @@ export class UI  {
                 newPriority.setAttribute('type', 'number');
 
                 submitButton.addEventListener('click', () => {
-                    Storage.editTodo(todo, input.value, newDescription.value, newDate.value, newPriority.value);
+                    Storage.editTodo(todo, project, input.value, newDescription.value, newDate.value, newPriority.value);
                     this.loadTodosToPage(project);
                 });
                 buttonContainer.append(submitButton);
