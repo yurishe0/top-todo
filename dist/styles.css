@@ -276,6 +276,18 @@ input:focus {
     accent-color: green;
 }
 
+.todo-priority-1 {
+    background-color: var(--font-secondary) !important;
+}
+
+.todo-priority-2 {
+    background-color:rgb(21, 21, 128) !important;
+}
+
+.todo-priority-3 {
+    background-color: rgb(3, 3, 63) !important;
+}
+
 @media only screen and (max-width: 600px) {
     h1 {
         margin-left: 0px;
