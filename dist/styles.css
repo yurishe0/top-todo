@@ -149,6 +149,28 @@ h1 > span {
     margin: 8px;
 }
 
+.small-input-holder input {
+    height: 30px;
+    border-radius: 4px 4px 0px 0px;
+    background-color: var(white);
+    outline: none;
+    border: none;
+    border-bottom: 4px solid var(--font-secondary);
+    margin: 8px 0px 0px 0px;
+}
+
+.small-input-holder {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.small-input-holder label {
+    color: var(--font-secondary);
+    font-family: Roboto;
+    margin-right: 8px;
+}
+
 input::placeholder {
     margin-left: 20px;
 }

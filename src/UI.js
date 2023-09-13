@@ -197,11 +197,28 @@ export class UI  {
                 const description = document.createElement('input');
                 description.setAttribute('placeholder', 'Description...');
 
+                const smallInputHolder = document.createElement('div');
+                smallInputHolder.classList.add("small-input-holder");
+
                 const date = document.createElement('input');
                 date.setAttribute('type', 'date');
 
+                const priorityContainer = document.createElement('div');
+                const priorityLabel = document.createElement('label');
+                priorityLabel.setAttribute("for", "priority");
+                priorityLabel.textContent = "Priority";
                 const priority = document.createElement('input');
                 priority.setAttribute('type', 'number');
+                priority.setAttribute('value', '1');
+                priority.setAttribute('id', 'priority');
+                priority.setAttribute('min', "1");
+                priority.setAttribute('max', "3");
+                priority.addEventListener("keypress", (e) => {
+                    e.preventDefault();
+                });
+                priorityContainer.append(priorityLabel, priority);
+
+                smallInputHolder.append(date, priorityContainer);
 
                 submitButton.addEventListener('click', () => {
                     // project.addTodo(new Todo(input.value, description.value, date.value, priority.value));
@@ -209,7 +226,7 @@ export class UI  {
                     this.loadTodosToPage(project);
                 });
                 buttonContainer.append(submitButton);
-                popUpContainer.append(header, input, description, date, priority, buttonContainer);
+                popUpContainer.append(header, input, description, smallInputHolder, buttonContainer);
                 break;
             case "projectRename":
                 header.textContent = "Rename Project";
