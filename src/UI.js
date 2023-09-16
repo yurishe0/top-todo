@@ -145,14 +145,34 @@ export class UI  {
                 todoTitle.style.textDecoration = "line-through";
                 todoDate.style.textDecoration = "line-through";
                 todoDescription.style.textDecoration = "line-through";
-                todoHeader.style.backgroundColor = "rgba(103, 103, 245, 0.4)";
+                switch(item.priority){
+                    case "1":
+                        todoHeader.style.backgroundColor = "rgba(103, 103, 245, 0.4)";
+                        break;
+                    case "2":
+                        todoHeader.style.backgroundColor = "rgba(48, 48, 173, 0.4)"
+                        break;
+                    case "3":
+                        todoHeader.style.backgroundColor = "rgba(29, 29, 143, 0.4)";
+                        break;
+                }
                 todoContainer.style.backgroundColor = "rgba(220, 226, 230, 0.4)";
             }
             else {
                 todoTitle.style.textDecoration = "";
                 todoDate.style.textDecoration = "";
                 todoDescription.style.textDecoration = "";
-                todoHeader.style.backgroundColor = "var(--font-secondary)";
+                switch(item.priority){
+                    case "1":
+                        todoHeader.style.backgroundColor = "var(--font-secondary)";
+                        break;
+                    case "2":
+                        todoHeader.style.backgroundColor = "rgb(21, 21, 128)"
+                        break;
+                    case "3":
+                        todoHeader.style.backgroundColor = "rgb(3, 3, 63)";
+                        break;
+                }
                 todoContainer.style.backgroundColor = "rgba(220, 226, 230, 1)";
             }
         }
@@ -221,7 +241,6 @@ export class UI  {
                 smallInputHolder.append(date, priorityContainer);
 
                 submitButton.addEventListener('click', () => {
-                    // project.addTodo(new Todo(input.value, description.value, date.value, priority.value));
                     createTodo(input.value, project, description.value, date.value, priority.value);
                     this.loadTodosToPage(project);
                 });

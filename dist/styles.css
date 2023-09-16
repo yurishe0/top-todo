@@ -15,6 +15,7 @@
 body {
     background-color: var(--font-primary);
     margin: 0px;
+    font-family: Roboto;
 }
 
 .navbar {
@@ -28,7 +29,6 @@ body {
 
 h1 {
     color: var(--font-primary);
-    font-family: Roboto;
     font-size: 42px;
     user-select: none;
     margin-left: 40px;
@@ -53,7 +53,6 @@ h1 > span {
     background-color: var(--main-color);
 
     color: rgb(255, 255, 255);
-    font-family: Roboto;
 }
 
 .content-container {
@@ -78,7 +77,6 @@ h1 > span {
 }
 
 .project-info-container h2 {
-    font-family: Roboto;
     font-size: 36px;
     color: var(--font-primary);
     margin: 0px;
@@ -130,7 +128,6 @@ h1 > span {
 }
 
 .popup-container > h2, p {
-    font-family: roboto;
     color: white;
 }
 
@@ -167,7 +164,6 @@ h1 > span {
 
 .small-input-holder label {
     color: var(--font-secondary);
-    font-family: Roboto;
     margin-right: 8px;
 }
 
@@ -193,7 +189,6 @@ input:focus {
     border: 2px solid var(--font-primary);
     border-radius: 6px;
 
-    font-family: roboto;
     font-size: 16px;
     color: var(--font-primary);
 
@@ -266,13 +261,30 @@ input:focus {
 .todo-header {
     display: flex;
     align-items: center;
-    background-color: var(--font-secondary);
     color: var(--font-primary);
     padding: 8px;
 }
 
+.todo-date {
+    min-width: 33%;
+    text-align: right;
+}
+
 .todo-header h3 {
     margin: 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.todo-content {
+    margin-top: auto;
+}
+
+.todo-content p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: black;
+    font-style: italic;
 }
 
 .todos-container {
@@ -299,15 +311,15 @@ input:focus {
 }
 
 .todo-priority-1 {
-    background-color: var(--font-secondary) !important;
+    background-color: var(--font-secondary);
 }
 
 .todo-priority-2 {
-    background-color:rgb(21, 21, 128) !important;
+    background-color:rgb(21, 21, 128);
 }
 
 .todo-priority-3 {
-    background-color: rgb(3, 3, 63) !important;
+    background-color: rgb(3, 3, 63);
 }
 
 @media only screen and (max-width: 600px) {
