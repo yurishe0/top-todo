@@ -273,31 +273,31 @@ export class UI  {
                 const newDate = document.createElement('input');
                 newDate.setAttribute('type', 'date');
 
-                const newpriorityContainer = document.createElement('div');
-                const newpriorityLabel = document.createElement('label');
-                priorityLabel.setAttribute("for", "priority");
-                priorityLabel.textContent = "Priority";
-                const newpriority = document.createElement('input');
-                newpriority.setAttribute('type', 'number');
-                newpriority.setAttribute('value', '1');
-                newpriority.setAttribute('id', 'priority');
-                newpriority.setAttribute('min', "1");
-                newpriority.setAttribute('max', "3");
-                newpriority.addEventListener("keypress", (e) => {
+                const newPriorityContainer = document.createElement('div');
+                const newPriorityLabel = document.createElement('label');
+                newPriorityLabel.setAttribute("for", "priority");
+                newPriorityLabel.textContent = "Priority";
+                const newPriority = document.createElement('input');
+                newPriority.setAttribute('type', 'number');
+                newPriority.setAttribute('value', '1');
+                newPriority.setAttribute('id', 'priority');
+                newPriority.setAttribute('min', "1");
+                newPriority.setAttribute('max', "3");
+                newPriority.addEventListener("keypress", (e) => {
                     e.preventDefault();
                 });
-                newpriorityContainer.append(newpriorityLabel, newpriority);
+                newPriorityContainer.append(newPriorityLabel, newPriority);
 
-                const newsmallInputHolder = document.createElement('div');
-                smallInputHolder.classList.add("small-input-holder");
-
+                const newSmallInputHolder = document.createElement('div');
+                newSmallInputHolder.classList.add("small-input-holder");
+                newSmallInputHolder.append(newDate, newPriorityContainer);
 
                 submitButton.addEventListener('click', () => {
                     Storage.editTodo(todo, project, input.value, newDescription.value, newDate.value, newPriority.value);
                     this.loadTodosToPage(project);
                 });
                 buttonContainer.append(submitButton);
-                popUpContainer.append(header, input, newDescription, newDate, newPriority, buttonContainer);
+                popUpContainer.append(header, input, newDescription, newSmallInputHolder, buttonContainer);
                 break;
             case "errorCreation":
                     header.textContent = "Error";
