@@ -14,4 +14,6 @@ export const projectListContainer = document.querySelector('#project-list');
     });
 })();
 
+UI.checkSelectedProject();
+
 

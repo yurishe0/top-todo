@@ -2,7 +2,6 @@ import { projectListContainer, body, siteContainer, projectContainer, contentCon
 import { createProject } from './createProject.js';
 import { createTodo } from './createTodo.js';
 import { Storage, nodeList } from './storage.js';
-import { Todo } from './todo.js';
 
 export class UI  {
     static addProjectToPage(project) {
@@ -24,14 +23,18 @@ export class UI  {
 
         projectDelete.addEventListener('click', () => {
             Storage.removeProject(project);
+            const contentProjectContainer = document.querySelector('.project-container');
+            contentProjectContainer.innerHTML = "";
             Storage.removeNode(projectContainer);
             this.loadProjectsToPage();
+            this.checkSelectedProject();
         });
 
         projectContainer.classList.add('project');
         projectName.textContent = project.name;
         projectName.addEventListener('click', () => {
             this.loadTodosToPage(project);
+            this.checkSelectedProject();
         })
 
         projectContainer.appendChild(projectName);
@@ -270,8 +273,24 @@ export class UI  {
                 const newDate = document.createElement('input');
                 newDate.setAttribute('type', 'date');
 
-                const newPriority = document.createElement('input');
-                newPriority.setAttribute('type', 'number');
+                const newpriorityContainer = document.createElement('div');
+                const newpriorityLabel = document.createElement('label');
+                priorityLabel.setAttribute("for", "priority");
+                priorityLabel.textContent = "Priority";
+                const newpriority = document.createElement('input');
+                newpriority.setAttribute('type', 'number');
+                newpriority.setAttribute('value', '1');
+                newpriority.setAttribute('id', 'priority');
+                newpriority.setAttribute('min', "1");
+                newpriority.setAttribute('max', "3");
+                newpriority.addEventListener("keypress", (e) => {
+                    e.preventDefault();
+                });
+                newpriorityContainer.append(newpriorityLabel, newpriority);
+
+                const newsmallInputHolder = document.createElement('div');
+                smallInputHolder.classList.add("small-input-holder");
+
 
                 submitButton.addEventListener('click', () => {
                     Storage.editTodo(todo, project, input.value, newDescription.value, newDate.value, newPriority.value);
@@ -294,6 +313,17 @@ export class UI  {
         body.appendChild(popUpContainer);
     }
 
+    static checkSelectedProject() {
+        if(projectContainer.innerHTML == '') {
+            const message = document.createElement("p");
+            message.textContent = "Nothing to view. No project selected.";
+            projectContainer.append(message);
+            projectContainer.classList.add('no-project');
+        }
+        else {
+            projectContainer.classList.remove('no-project');
+        }
+    }
 
     static hidePopUp() {
         const popUpContainer = document.querySelector('.popup-container');
