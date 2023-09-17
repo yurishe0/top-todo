@@ -97,6 +97,9 @@ export class UI  {
             const todoDescription = document.createElement('p');
 
                 todoContainer.classList.add('todo-container');
+                todoContainer.addEventListener('click', () => {
+                    this.displayPopUp('viewTodo', "", "", item);
+                })
                 todoHeader.classList.add('todo-header');
                 todoHeader.classList.add(`todo-priority-${item.priority}`);
                 todoContent.classList.add('todo-content');
@@ -109,14 +112,16 @@ export class UI  {
                 const todoEdit = document.createElement('i');
                 todoEdit.classList.add("material-icons", "edit-todo");
                 todoEdit.innerHTML = "edit";
-                todoEdit.addEventListener('click', () => {
+                todoEdit.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     this.displayPopUp("todoEdit", "", project, item);
                 });
 
                 const todoDelete = document.createElement('i');
                 todoDelete.classList.add("material-icons", "delete-todo");
                 todoDelete.innerHTML = "delete";
-                todoDelete.addEventListener('click', () => {
+                todoDelete.addEventListener('click', (e) => {
+                    e.stopPropagation();
                     Storage.removeTodo(item, project);
                     this.loadTodosToPage(project);
                 })
@@ -126,7 +131,10 @@ export class UI  {
                 if(item.checked == true) {
                     todoCheck.setAttribute("checked", "true");
                 }
-                todoCheck.addEventListener('change', () => {
+                todoCheck.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                })
+                todoCheck.addEventListener('change', (e) => {
                     item.checkTodo();
                     this.adjustTodoStyling(todoTitle, todoDate, todoDescription, todoHeader, todoContainer, item);
                 });
@@ -306,6 +314,18 @@ export class UI  {
                     popUpContainer.append(header, paragraph);
                     popUpContainer.classList.add('popup-error');
                     break;
+            case "viewTodo":
+                header.textContent = todo.title;
+                const todoDescription = document.createElement('p');
+                todoDescription.textContent = todo.description;
+                const todoDate = document.createElement('span');
+                todoDate.textContent = `Due date: ${todo.dueDate}`;
+                const todoPriority = document.createElement('span');
+                todoPriority.textContent = `Priority: ${todo.priority}`;
+
+                cancelButton.textContent = "OK";
+
+                popUpContainer.append(header, todoDescription, todoDate, todoPriority);
                 }
 
         buttonContainer.append(cancelButton);

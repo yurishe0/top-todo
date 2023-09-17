@@ -14,6 +14,7 @@ export const createTodo = (name, project, description, date, priority) => {
         return;
     }
     if(!nameExists) {
+        if(description == "") description = "No description...";
         const todo = new Todo(name, description, date, priority)
         project.addTodo(todo);
         UI.loadTodosToPage(project);
