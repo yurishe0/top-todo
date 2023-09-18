@@ -15,6 +15,7 @@ export class UI  {
         projectEdit.addEventListener('click', () => {
             UI.displayPopUp("projectRename", "", project);
             this.loadProjectsToPage();
+            this.checkSelectedProject();
         })
 
         const projectDelete = document.createElement('i');
@@ -32,7 +33,8 @@ export class UI  {
 
         projectContainer.classList.add('project');
         projectName.textContent = project.name;
-        projectName.addEventListener('click', () => {
+        projectName.addEventListener('click', (e) => {
+            e.stopPropagation();
             this.loadTodosToPage(project);
             this.checkSelectedProject();
         })

@@ -1,4 +1,3 @@
-import { Storage } from './storage.js';
 import { Todo } from './todo.js';
 import { UI } from './UI.js';
 
