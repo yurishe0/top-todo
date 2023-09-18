@@ -108,7 +108,7 @@ export class Storage {
             return;
         }
         projectList.forEach((item) => {
-            if(item.getName() == newName) {
+            if(item.name == newName) {
                 nameExists = true;
                 UI.displayPopUp("errorCreation", "A project under this name already exists.");
                 return;
@@ -116,7 +116,7 @@ export class Storage {
         })
         if(!nameExists) {
             const index = this.findProject(project);
-            projectList[index].setName(newName);
+            projectList[index].name = newName;
             nodeList[index].firstChild.textContent = newName;
             this.setLocalProjectList(projectList);
             this.setLocalNodeList(nodeList);
