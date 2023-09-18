@@ -1,11 +1,42 @@
 import { UI } from "./UI";
 
-export const projectList = [];
-export const nodeList = [];
+export let projectList = [];
+export let nodeList = [];
 
 export class Storage {
+    static getLocalProjectList() {
+        let localProjectList = localStorage.getItem('localProjectList');
+        localProjectList = JSON.parse(localProjectList);
+        return localProjectList;
+    }
+
+    static getLocalNodeList() {
+        let localNodeList = localStorage.getItem('localNodeList');
+        let newNodeList = [];
+        localNodeList = JSON.parse(localNodeList);
+        localNodeList.forEach((element) => {
+            const template = document.createElement('template');
+            template.innerHTML = element.trim();
+            newNodeList.push(template.content.firstChild);
+        })
+        return newNodeList;
+    }
+
+    static setLocalProjectList(projectList) {
+        localStorage.setItem("localProjectList", JSON.stringify(projectList));
+    }
+
+    static setLocalNodeList(nodeList) {
+        let stringNodeList = [];
+        nodeList.forEach((node) => {
+            stringNodeList.push(node.outerHTML);
+        });
+        localStorage.setItem("localNodeList", JSON.stringify(stringNodeList));
+    }
+
     static addProject(project) {
         projectList.push(project);
+        this.setLocalProjectList(projectList);
     }
 
     static removeProject(project) {
@@ -13,15 +44,18 @@ export class Storage {
         if(index != -1) {
             projectList.splice(index, 1);
         }
+        this.setLocalProjectList(projectList);
     }
 
     static removeTodo(todo, project) {
         const todoIndex = this.findTodo(todo, project);
         project.list.splice(todoIndex, 1);
+        this.setLocalProjectList(projectList);
     }
 
     static addNode(node) {
         nodeList.push(node);
+        this.setLocalNodeList(nodeList);
     }
 
     static removeNode(node) {
@@ -29,6 +63,7 @@ export class Storage {
         if(index != -1) {
             nodeList.splice(index, 1);
         }
+        this.setLocalNodeList(nodeList);
     }
 
     static findProject(project) {
@@ -58,6 +93,8 @@ export class Storage {
             const index = this.findProject(project);
             projectList[index].setName(newName);
             nodeList[index].firstChild.textContent = newName;
+            this.setLocalProjectList(projectList);
+            this.setLocalNodeList(nodeList);
         }
     }
 
@@ -78,9 +115,22 @@ export class Storage {
             project.list[todoIndex].description = newDescription;
             project.list[todoIndex].dueDate = newDate;
             project.list[todoIndex].priority = newPriority;
+            this.setLocalProjectList(projectList);
             return;
         }
     }
 }
+
+if(!localStorage.localProjectList) {
+    localStorage.localProjectList = [];
+    localStorage.localNodeList = [];
+} else {
+    projectList = Storage.getLocalProjectList();
+    nodeList = Storage.getLocalNodeList();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    UI.loadProjectsToPage();
+});
 
 

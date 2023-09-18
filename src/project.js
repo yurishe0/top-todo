@@ -1,3 +1,6 @@
+import { Storage } from "./storage";
+import { projectList } from "./storage";
+
 export class Project {
     constructor(name) {
         this.name = name;
@@ -14,5 +17,6 @@ export class Project {
 
     addTodo(todo) {
         this.list.push(todo);
+        Storage.setLocalProjectList(projectList);
     }
 }
