@@ -1,4 +1,5 @@
 import { UI } from "./UI";
+import { Project } from "./project";
 
 export let projectList = [];
 export let nodeList = [];
@@ -14,10 +15,34 @@ export class Storage {
         let localNodeList = localStorage.getItem('localNodeList');
         let newNodeList = [];
         localNodeList = JSON.parse(localNodeList);
+        let index = 0;
         localNodeList.forEach((element) => {
             const template = document.createElement('template');
             template.innerHTML = element.trim();
-            newNodeList.push(template.content.firstChild);
+            const listElement = template.content.firstChild;
+            const project = new Project(projectList[index].name, projectList[index].list);
+            listElement.addEventListener('click', () => {
+                UI.loadTodosToPage(project);
+                UI.checkSelectedProject();
+            })
+            const editProject = listElement.querySelector('.edit-project');
+            editProject.addEventListener('click', (e) => {
+                e.stopPropagation();
+                UI.displayPopUp("projectRename", "", project);
+                UI.loadProjectsToPage();
+            })
+            const deleteProject = listElement.querySelector('.delete-project');
+            deleteProject.addEventListener('click', (e) => {
+                e.stopPropagation();
+                Storage.removeProject(project);
+                const contentProjectContainer = document.querySelector('.project-container');
+                contentProjectContainer.innerHTML = "";
+                Storage.removeNode(listElement);
+                UI.loadProjectsToPage();
+                UI.checkSelectedProject();
+            });
+            index++;
+            newNodeList.push(listElement);
         })
         return newNodeList;
     }
@@ -67,7 +92,7 @@ export class Storage {
     }
 
     static findProject(project) {
-        const index = projectList.findIndex((item) => item.getName() == project.getName());
+        const index = projectList.findIndex((item) => item.name == project.name);
         return index;
     }
 
@@ -121,15 +146,15 @@ export class Storage {
     }
 }
 
-if(!localStorage.localProjectList) {
-    localStorage.localProjectList = [];
-    localStorage.localNodeList = [];
-} else {
-    projectList = Storage.getLocalProjectList();
-    nodeList = Storage.getLocalNodeList();
-}
 
 document.addEventListener("DOMContentLoaded", () => {
+    if(!localStorage.localProjectList) {
+        localStorage.localProjectList = [];
+        localStorage.localNodeList = [];
+    } else {
+        projectList = Storage.getLocalProjectList();
+        nodeList = Storage.getLocalNodeList();
+    }
     UI.loadProjectsToPage();
 });
 

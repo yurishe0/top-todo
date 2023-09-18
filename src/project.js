@@ -2,9 +2,9 @@ import { Storage } from "./storage";
 import { projectList } from "./storage";
 
 export class Project {
-    constructor(name) {
+    constructor(name, list = []) {
         this.name = name;
-        this.list = [];
+        this.list = list;
     }
 
     getName() {
